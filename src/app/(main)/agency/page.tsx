@@ -10,7 +10,7 @@ export default async function Agency() {
 
   if (agency) {
     if (user?.role === "SUBACCOUNT_GUEST" || user?.role === "SUBACCOUNT_USER") {
-      return redirect(`/agency/${agency.id}/subaccount`);
+      return redirect(`/subAccount`);
     }
 
     if (user?.role === "AGENCY_ADMIN" || user?.role === "AGENCY_OWNER") {
