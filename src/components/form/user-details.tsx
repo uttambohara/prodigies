@@ -51,8 +51,6 @@ export function UserDetails({ user }: UserDetailsProps) {
   const router = useRouter();
   const data = useModal();
 
-  console.log({ user });
-
   // ...
   const form = useForm({
     resolver: zodResolver(formSchema),

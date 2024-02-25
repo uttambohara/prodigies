@@ -13,7 +13,8 @@ interface UploadFileProps {
 
 const UploadFile = forwardRef(
   ({ value, onChange, type, endpoint }: UploadFileProps, ref) => {
-    const fileType = value.split(".")[1];
+    console.log({ value });
+    const fileType = value && value.split(".")[1];
     const isPdf = fileType === "pdf";
 
     if (fileType && isPdf) {

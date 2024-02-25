@@ -93,6 +93,9 @@ export const columns: ColumnDef<UserType>[] = [
     cell: ({ row }) => {
       const userData = row.original;
       const isOwner = userData?.role === Role.AGENCY_OWNER;
+      const notOwnerButHasPermission = userData?.Permissions.find(
+        (perm) => userData.email === perm.email && perm.access === true
+      );
 
       if (isOwner) {
         return (
@@ -101,11 +104,17 @@ export const columns: ColumnDef<UserType>[] = [
             <span className="italic"> {userData?.Agency?.name}</span>
           </Badge>
         );
+      } else if (notOwnerButHasPermission) {
+        return (
+          <Badge className="bg-gray-500">
+            🎁 Sub Account user of agency-
+            <span className="italic"> {userData?.Agency?.name}</span>
+          </Badge>
+        );
+      } else {
+        // Sub account user
+        return <Badge variant={"outline"}>💅 Not registered</Badge>;
       }
-
-      // Sub account user
-
-      return <Badge variant={"outline"}>💅 Not registered</Badge>;
     },
   },
   {
@@ -169,10 +178,7 @@ export const columns: ColumnDef<UserType>[] = [
                         description={"Edit your user details!"}
                       >
                         <UserDetails user={userData!} />
-                      </CustomModal>,
-                      async function () {
-                        return { user: await getUser(userData?.id!) };
-                      }
+                      </CustomModal>
                     )
                   }
                   className="flex items-center gap-2"

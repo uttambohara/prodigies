@@ -1,6 +1,6 @@
 "use server";
 import { clerkClient, currentUser } from "@clerk/nextjs";
-import { Agency, Prisma, SubAccount, User } from "@prisma/client";
+import { Agency, Media, Prisma, SubAccount, User } from "@prisma/client";
 import { v4 as uuidv4 } from "uuid";
 import { prisma } from "./prisma";
 
@@ -418,4 +418,34 @@ export async function getUser(userid: string) {
   });
 
   return response;
+}
+
+export async function createMedia({ media }: { media: Media }) {
+  const response = await prisma.media.create({
+    data: {
+      ...media,
+    },
+  });
+
+  return { status: "success", response };
+}
+
+export async function getAllMedia(subaccountid: string) {
+  const response = await prisma.media.findMany({
+    where: {
+      subAccountId: subaccountid as string,
+    },
+  });
+
+  return response;
+}
+
+export async function deleteMedia(mediaId: string) {
+  const response = await prisma.media.delete({
+    where: {
+      id: mediaId,
+    },
+  });
+
+  return { status: "success" };
 }
