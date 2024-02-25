@@ -31,6 +31,7 @@ import { Card, CardContent, CardHeader } from "../ui/card";
 import { Switch } from "../ui/switch";
 import { useToast } from "../ui/use-toast";
 import UploadFile from "../upload-file";
+import CustomModal from "../custom-modal";
 
 const formSchema = z.object({
   name: z.string().min(2),
@@ -49,6 +50,8 @@ export function UserDetails({ user }: UserDetailsProps) {
   const { toast } = useToast();
   const router = useRouter();
   const data = useModal();
+
+  console.log({ user });
 
   // ...
   const form = useForm({
@@ -116,8 +119,15 @@ export function UserDetails({ user }: UserDetailsProps) {
         });
       }
 
-      data?.onClose();
       router.refresh();
+      data?.onOpen(
+        <CustomModal
+          title={"User details"}
+          description={"Edit your user details!"}
+        >
+          <UserDetails user={permission.user} />
+        </CustomModal>
+      );
     } catch (err) {
       console.log(err);
     }
