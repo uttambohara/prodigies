@@ -370,6 +370,7 @@ export async function upsertPermission({
   email: string;
   subAccountId: string;
 }) {
+  //
   const response = await prisma.permissions.upsert({
     where: {
       id: permissionId || uuidv4(),
@@ -384,7 +385,21 @@ export async function upsertPermission({
     },
   });
 
-  return { status: "success", response };
+  const user = await prisma.user.findFirst({
+    where: {
+      email: response?.email,
+    },
+    include: {
+      Permissions: true,
+      Agency: {
+        include: {
+          SubAccount: true,
+        },
+      },
+    },
+  });
+
+  return { status: "success", user };
 }
 
 export async function getUser(userid: string) {
